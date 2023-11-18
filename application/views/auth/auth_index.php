@@ -39,11 +39,11 @@
                 <form method="POST" action="<?= base_url('auth'); ?>">
 
                     <div class="form-group position-relative has-icon-left mb-4">
-                        <input type="text" id="email" name="email" value="<?= set_value('email'); ?>" class="form-control form-control-xl" placeholder="Email" />
+                        <input type="text" id="identity" name="identity" value="<?= set_value('identity'); ?>" class="form-control form-control-xl" placeholder="Username or Email" />
                         <div class="form-control-icon">
                             <i class="bi bi-person"></i>
                         </div>
-                        <?= form_error('email', '<label for="email" class="form-label text-danger mt-2">', '</label>'); ?>
+                        <?= form_error('identity', '<label for="identity" class="form-label text-danger mt-2">', '</label>'); ?>
                     </div>
 
                     <div class="form-group position-relative has-icon-left mb-4">

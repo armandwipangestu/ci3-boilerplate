@@ -13,10 +13,64 @@ class Auth extends CI_Controller
 
     public function index()
     {
-        $data['title'] = "Log in";
-        $this->load->view('layout/layout_header', $data);
-        $this->load->view('auth/auth_index');
-        $this->load->view('layout/layout_footer_auth');
+        // Username / Email Field
+        $this->form_validation->set_rules('identity', 'Username or Email', 'required|trim', [
+            'required' => "Username or Email can't be empty"
+        ]);
+
+        // Password Field
+        $this->form_validation->set_rules('password', 'Password', 'trim|required', [
+            'required' => "Password can't be empty"
+        ]);
+
+        if ($this->form_validation->run() === FALSE) {
+            $data['title'] = "Log in";
+            $this->load->view('layout/layout_header', $data);
+            $this->load->view('auth/auth_index');
+            $this->load->view('layout/layout_footer_auth');
+        } else {
+            $this->_signin();
+        }
+    }
+
+    private function _signin()
+    {
+        $identity = htmlspecialchars($this->input->post('identity', true));
+        $password = $this->input->post('password');
+
+        // Determine if input is email or username
+        $is_email = filter_var($identity, FILTER_VALIDATE_EMAIL);
+
+        // Check if the user exists based on email or username
+        if ($is_email) {
+            $user = $this->db->get_where('user_data', ['email' => $identity])->row_array();
+        } else {
+            $user = $this->db->get_where('user_data', ['username' => $identity])->row_array();
+        }
+
+        if ($user) {
+            // User found, check password
+            if (password_verify($password, $user['password'])) {
+                $data = [
+                    'id_user' => $user['id'],
+                    'email' => $user['email'],
+                    'role_id' => $user['role_id']
+                ];
+                $this->session->set_userdata($data);
+                if ($user['role_id'] == 1) {
+                    redirect('admin');
+                }
+                if ($user['role_id'] == 2) {
+                    redirect('member');
+                }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-warning ml-4 mr-4">The password you entered is incorrect</div>');
+                redirect('auth');
+            }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger ml-4 mr-4">The account you entered was not found</div>');
+            redirect('auth');
+        }
     }
 
     public function signup()
