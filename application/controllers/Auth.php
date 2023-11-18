@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Auth extends CI_Controller
 {
+    private $data = array();
+
     public function __construct()
     {
         parent::__construct();
@@ -15,5 +17,84 @@ class Auth extends CI_Controller
         $this->load->view('layout/layout_header', $data);
         $this->load->view('auth/auth_index');
         $this->load->view('layout/layout_footer_auth');
+    }
+
+    public function signup()
+    {
+        // First Name Field
+        $this->form_validation->set_rules('first_name', 'First Name', 'required|trim', ['required' => "First Name can't be empty"]);
+        // Last Name Field
+        $this->form_validation->set_rules('last_name', 'Last Name', 'required|trim', ['required' => "Last Name can't be empty"]);
+        // Username Field
+        $this->form_validation->set_rules('username', 'Username', 'required|trim|is_unique[user_data.username]|regex_match[/^[a-z0-9]+$/]', [
+            'required' => "Username can't be empty",
+            'is_unique' => 'Username already taken, use another username to register',
+            'regex_match' => 'Username can only contain lowercase letters and numbers without symbols'
+        ]);
+        // Gender Field
+        $this->form_validation->set_rules('gender', 'Gender', 'required|trim|callback_validate_gender', ['required' => "Gender can't be empty"]);
+        // Address Field
+        $this->form_validation->set_rules('address', 'Address', 'required|trim', ['required' => "Address can't be empty"]);
+        // Phone Number Field
+        $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|trim', ['required' => "Phone Number can't be empty"]);
+        // Email Field
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user_data.email]', [
+            'required' => "Email can't be empty",
+            'valid_email' => 'Please insert a valid email',
+            'is_unique' => 'Email already registered, use another email to register'
+        ]);
+        // Password Field
+        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[8]|matches[confirm_password]', [
+            'required' => "Password can't be empty",
+            'matches' => '',
+            'min_length' => 'Password too short, minimum is 8 character'
+        ]);
+        // Confirm Password Field
+        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|trim|matches[password]', [
+            'required' => "Confirm Password can't be empty",
+            'matches' => 'Confirm Password is not the same as Password',
+        ]);
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->data['title'] = "Register";
+            $this->load->view('layout/layout_header', $this->data);
+            $this->load->view('auth/auth_signup');
+            $this->load->view('layout/layout_footer_auth');
+        } else {
+            $avatar_image = htmlspecialchars($this->input->post('gender', true)) == "Male" ? "default_male.png" : "default_female.png";
+
+            // Check if any data already exists in the user_data table, if data empty use role 1, if data exists use role 2
+            $this->db->from('user_data');
+            $user_exists = $this->db->get()->num_rows();
+            $role_id = ($user_exists > 0) ? 2 : 1;
+
+            $data = [
+                'first_name' => htmlspecialchars($this->input->post('first_name', true)),
+                'last_name' => htmlspecialchars($this->input->post('last_name', true)),
+                'username' => htmlspecialchars($this->input->post('username', true)),
+                'gender' => htmlspecialchars($this->input->post('gender', true)),
+                'address' => htmlspecialchars($this->input->post('address', true)),
+                'phone_number' => htmlspecialchars($this->input->post('phone_number', true)),
+                'email' => htmlspecialchars($this->input->post('email', true)),
+                'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+                'avatar_image' => $avatar_image,
+                'role_id' => $role_id
+            ];
+
+            $this->db->insert('user_data', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success ml-4 mr-4">Your account has been successfully registered, please log in</div>');
+            redirect('auth');
+        }
+    }
+
+    public function validate_gender($input)
+    {
+        if ($input == "") {
+            $this->form_validation->set_message('validate_gender', "Gender can't be empty");
+            return false;
+        } else {
+            $this->data['selected_gender'] = $input;
+            return true;
+        }
     }
 }

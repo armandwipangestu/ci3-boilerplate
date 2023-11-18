@@ -83,7 +83,7 @@
                     <div class="text-center">
                         <p>
                             Developed with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span> By
-                            <a href="https://github.com/armandwipangestu" target="_blank">Arman</a>,
+                            <a href="https://github.com/armandwipangestu" target="_blank">Arman</a>
                         </p>
                     </div>
                 </div>
