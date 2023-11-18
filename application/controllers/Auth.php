@@ -73,6 +73,20 @@ class Auth extends CI_Controller
         }
     }
 
+    public function logout()
+    {
+        $this->session->unset_userdata('id_user');
+        $this->session->unset_userdata('email');
+        $this->session->unset_userdata('role_id');
+
+        if ($this->session->flashdata('message')) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success ml-4 mr-4">Your account has been deleted!</div>');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-success ml-4 mr-4">You have successfully logout!</div>');
+        }
+        redirect('auth');
+    }
+
     public function signup()
     {
         // First Name Field

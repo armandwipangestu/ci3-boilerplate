@@ -14,3 +14,21 @@ if (inputNumber) {
 		});
 	});
 }
+
+const logout = document.querySelector("#logout");
+logout.addEventListener("click", function () {
+	const dataUrl = logout.dataset.url;
+	Swal.fire({
+		icon: "warning",
+		html: `Are you sure want to logout?`,
+		showCancelButton: true,
+		confirmButtonColor: "#d9534f",
+		cancelButtonColor: "#5cb85c",
+		confirmButtonText: `Yes`,
+		cancelButtonText: `No`,
+	}).then((result) => {
+		if (result.isConfirmed) {
+			location.href = `${dataUrl}`;
+		}
+	});
+});

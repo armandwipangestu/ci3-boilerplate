@@ -25,7 +25,7 @@
                                     <a href="#" class="dropdown-item has-icon">
                                         <i class="fas fa-user-edit"></i> Settings
                                     </a>
-                                    <a href="#" data-url="<?= base_url('auth/logout'); ?>" class="dropdown-item has-icon text-danger" id="keluar">
+                                    <a href="#" data-url="<?= base_url('auth/logout'); ?>" class="dropdown-item has-icon text-danger" id="logout">
                                         <i class="fas fa-sign-out-alt"></i> Logout
                                     </a>
                                 </div>
