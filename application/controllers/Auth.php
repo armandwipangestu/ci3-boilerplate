@@ -13,6 +13,7 @@ class Auth extends CI_Controller
 
     public function index()
     {
+        $this->_alreadyLogin();
         // Username / Email Field
         $this->form_validation->set_rules('identity', 'Username or Email', 'required|trim', [
             'required' => "Username or Email can't be empty"
@@ -61,7 +62,7 @@ class Auth extends CI_Controller
                     redirect('admin');
                 }
                 if ($user['role_id'] == 2) {
-                    redirect('member');
+                    redirect('user');
                 }
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-warning ml-4 mr-4">The password you entered is incorrect</div>');
@@ -87,8 +88,20 @@ class Auth extends CI_Controller
         redirect('auth');
     }
 
+    private function _alreadyLogin()
+    {
+        if ($this->session->userdata('role_id') == 1) {
+            redirect('admin');
+        }
+
+        if ($this->session->userdata('role_id') == 2) {
+            redirect('user');
+        }
+    }
+
     public function signup()
     {
+        $this->_alreadyLogin();
         // First Name Field
         $this->form_validation->set_rules('first_name', 'First Name', 'required|trim', ['required' => "First Name can't be empty"]);
         // Last Name Field
