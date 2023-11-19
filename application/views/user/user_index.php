@@ -2,7 +2,7 @@
 
 <div class="flex">
     <div class="float-end">
-        <label class="form-label">Last edited: <?= strtotime($user['updated_at']); ?></label>
+        <label class="form-label">Last edited: <?= (new DateTime($user['updated_at']))->format('l, j F Y H:m:s'); ?></label>
     </div>
 </div>
 
@@ -19,7 +19,7 @@
                             <input type="file" id="avatar_image" style="display:none;" name="avatar_image" onchange="previewImage()" class="image-preview">
                         </div>
                         <h3 class="mt-3"><?= $user['username']; ?></h3>
-                        <p class="text-small"><?= $role_name; ?> - Since <?= strtotime($user['created_at']); ?></p>
+                        <p class="text-small"><?= $role_name; ?> - Since <?= (new DateTime($user['created_at']))->format('d F Y'); ?></p>
                         <ul class="text-small text-muted mt-3">
                             <li>Maks upload file: 2MB</li>
                             <li>Allowed extension: JPG dan PNG</li>
