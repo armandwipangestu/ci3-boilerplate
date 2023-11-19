@@ -32,6 +32,9 @@
 <script src="<?= base_url(); ?>template/mazer/dist/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
 <script src="<?= base_url(); ?>template/mazer/dist/assets/static/js/pages/simple-datatables.js"></script>
 
+<!-- jQuery -->
+<script src="<?= base_url(); ?>assets/js/jquery/jquery-3.7.1.min.js"></script>
+
 <!-- Custom JS -->
 <script src="<?= base_url(); ?>assets/js/script.js"></script>
 
