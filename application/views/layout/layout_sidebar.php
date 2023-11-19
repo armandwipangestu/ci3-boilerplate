@@ -34,14 +34,76 @@
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
-                <li class="sidebar-title">Menu</li>
+                <!-- Get Menu By Role User Login -->
+                <?php
+                // use role_id based on database
+                $email = $this->session->userdata('email');
+                $roleId = $this->db->query("
+                        SELECT `user_data`.`role_id`
+                        FROM `user_data`
+                        WHERE `user_data`.`email` = '$email'
+                    ")->row_array()['role_id'];
 
-                <li class="sidebar-item active">
-                    <a href="index.html" class="sidebar-link">
-                        <i class="bi bi-grid-fill"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
+                $queryMenu = "
+                    SELECT `um`.`id`, `um`.`menu`
+                    FROM `user_menu` AS um
+                    JOIN `user_access_menu` AS uam
+                        ON `um`.`id` = `uam`.`menu_id`
+                    WHERE `uam`.`role_id` = $roleId
+                    ORDER BY `um`.`menu` ASC
+                ";
+                $menu = $this->db->query($queryMenu)->result_array();
+                ?>
+
+                <!-- Start Loop Menu -->
+                <?php
+                foreach ($menu as $m) :
+                ?>
+
+                    <li class="sidebar-title"><?= $m['menu']; ?></li>
+
+                    <!-- Get Sub Menu Based On Loop Menu -->
+                    <?php
+                    $menuId = $m['id'];
+                    $querySubMenu = "
+                        SELECT `usm`.`title`, `usm`.`url`, `usm`.`icon`, 
+                               `usm`.`menu_id`, `um`.`menu`, `usm`.`created_at`, `usm`.`updated_at`
+                        FROM `user_sub_menu` AS usm
+                        JOIN `user_menu` AS um
+                            ON `usm`.`menu_id` = `um`.`id`
+                        WHERE `usm`.`menu_id` = $menuId
+                    ";
+                    $subMenu = $this->db->query($querySubMenu)->result_array();
+                    ?>
+
+                    <!-- Start Loop Sub Menu -->
+                    <?php
+                    foreach ($subMenu as $sm) :
+                    ?>
+
+                        <!-- Check Current Sub Menu Active Access By URL or Data Title From Controller -->
+                        <?php if ($title == $sm['title']) : ?>
+                            <li class="sidebar-item active">
+
+                            <?php else : ?>
+
+                            <li class="sidebar-item">
+
+                            <?php endif; ?>
+
+                            <a href="<?= base_url($sm['url']); ?>" class="sidebar-link">
+                                <i class="<?= $sm['icon']; ?>"></i>
+                                <span><?= $sm['title']; ?></span>
+                            </a>
+                            </li>
+
+                            <!-- End Loop Sub Menu -->
+                        <?php endforeach; ?>
+
+                        <hr />
+
+                        <!-- End Loop Menu -->
+                    <?php endforeach; ?>
             </ul>
         </div>
     </div>
