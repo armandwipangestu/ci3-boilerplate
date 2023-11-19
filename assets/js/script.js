@@ -32,3 +32,17 @@ logout.addEventListener("click", function () {
 		}
 	});
 });
+
+// Preview the image uploaded
+function previewImage() {
+	const image = document.querySelector(".image-preview");
+	const imgPreview = document.querySelector(".img-preview");
+	// console.log(imgPreview);
+
+	const oFReader = new FileReader();
+	oFReader.readAsDataURL(image.files[0]);
+
+	oFReader.onload = function (oFREvent) {
+		imgPreview.src = oFREvent.target.result;
+	};
+}
