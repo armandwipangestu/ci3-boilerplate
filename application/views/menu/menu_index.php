@@ -114,7 +114,6 @@
         $.get(`${baseUrl}menu/get_menu_by_id/${menuId}`, (data) => {
             const menu = $.parseJSON(data);
 
-            $('.modal-title').text('Change Menu');
             $('#changeId').val(menu.id);
             $('#changeMenu').val(menu.menu);
             $('#modalChangeMenu').modal('show');
