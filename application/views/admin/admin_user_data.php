@@ -8,53 +8,55 @@
             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modallAddNewRole">Add New Role</a>
         </div>
         <div class="card-body">
-            <table class="table table-striped" id="table1">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Avatar Image</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Phone Number</th>
-                        <th scope="col">Created At</th>
-                        <th scope="col">Updated At</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1 ?>
-                    <?php foreach ($users as $user) : ?>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered table-lg" id="table1">
+                    <thead>
                         <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><img src="<?= base_url(); ?>assets/img/avatar_image/<?= $user['avatar_image'] ?>" alt="Avatar Image" class="rounded-circle mr-1" style="width: 30px;"></td>
-                            <td><?= $user['username']; ?></td>
-                            <td><?= $user['email']; ?></td>
-                            <td><?= $user['role']; ?></td>
-                            <td><?= $user['first_name']; ?></td>
-                            <td><?= $user['last_name']; ?></td>
-                            <td><?= $user['gender']; ?></td>
-                            <td><?= $user['address']; ?></td>
-                            <td><?= $user['phone_number']; ?></td>
-                            <td><?= (new DateTime($user['created_at']))->format('l, j F Y H:m:s'); ?></td>
-                            <td><?= (new DateTime($user['updated_at']))->format('l, j F Y H:m:s'); ?></td>
-                            <td>
-                                <a onclick="changeRole('<?= $user['id']; ?>')" class="cursor-pointer">
-                                    <span class="badge bg-warning">Edit</span>
-                                </a>
-                                <a class="cursor-pointer delete-menu" onclick="deleteRole(this)" data-id="<?= $user['id']; ?>" data-role="<?= $user['role']; ?>">
-                                    <span class="badge bg-danger">Delete</span>
-                                </a>
-                            </td>
+                            <th scope="col">No</th>
+                            <th scope="col">Avatar Image</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Updated At</th>
+                            <th scope="col">Action</th>
                         </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1 ?>
+                        <?php foreach ($users as $user) : ?>
+                            <tr>
+                                <th scope="row"><?= $i; ?></th>
+                                <td><img src="<?= base_url(); ?>assets/img/avatar_image/<?= $user['avatar_image'] ?>" alt="Avatar Image" class="rounded-circle mr-1" style="width: 30px;"></td>
+                                <td><?= $user['username']; ?></td>
+                                <td><?= $user['email']; ?></td>
+                                <td><?= $user['role']; ?></td>
+                                <td><?= $user['first_name']; ?></td>
+                                <td><?= $user['last_name']; ?></td>
+                                <td><?= $user['gender']; ?></td>
+                                <td><?= $user['address']; ?></td>
+                                <td><?= $user['phone_number']; ?></td>
+                                <td><?= (new DateTime($user['created_at']))->format('l, j F Y H:m:s'); ?></td>
+                                <td><?= (new DateTime($user['updated_at']))->format('l, j F Y H:m:s'); ?></td>
+                                <td>
+                                    <a onclick="changeRole('<?= $user['id']; ?>')" class="cursor-pointer">
+                                        <span class="badge bg-warning">Edit</span>
+                                    </a>
+                                    <a class="cursor-pointer delete-menu" onclick="deleteRole(this)" data-id="<?= $user['id']; ?>" data-role="<?= $user['role']; ?>">
+                                        <span class="badge bg-danger">Delete</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php $i++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>
