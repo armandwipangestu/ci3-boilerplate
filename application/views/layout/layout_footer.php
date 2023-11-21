@@ -1,5 +1,4 @@
 </div>
-
 <footer class="main-footer">
     <div class="footer clearfix mb-0 text-muted">
         <div class="float-start">
@@ -13,6 +12,8 @@
         </div>
     </div>
 </footer>
+</div>
+
 
 
 <script src="<?= base_url(); ?>template/mazer/dist/assets/static/js/components/dark.js"></script>

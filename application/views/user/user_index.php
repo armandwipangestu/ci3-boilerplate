@@ -1,5 +1,4 @@
 <?= $this->session->flashdata('message') ?>
-
 <div class="flex">
     <div class="float-end">
         <label class="form-label">Last edited: <?= (new DateTime($user['updated_at']))->format('l, j F Y H:m:s'); ?></label>

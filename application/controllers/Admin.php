@@ -7,6 +7,7 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         _checkIsLogin();
+        $this->load->model('User_model', 'user');
     }
 
     public function index()
@@ -15,8 +16,8 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user_data', ['email' => $this->session->userdata('email')])->row_array();
 
         $this->load->view('layout/layout_header', $data);
-        $this->load->view('layout/layout_topbar');
         $this->load->view('layout/layout_sidebar');
+        $this->load->view('layout/layout_topbar');
         $this->load->view('admin/admin_index');
         $this->load->view('layout/layout_footer');
     }
@@ -35,8 +36,8 @@ class Admin extends CI_Controller
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('layout/layout_header', $data);
-            $this->load->view('layout/layout_topbar');
             $this->load->view('layout/layout_sidebar');
+            $this->load->view('layout/layout_topbar');
             $this->load->view('admin/admin_role');
             $this->load->view('layout/layout_footer');
         } else {
@@ -58,8 +59,8 @@ class Admin extends CI_Controller
         $data['menu'] = $this->db->get('user_menu')->result_array();
 
         $this->load->view('layout/layout_header', $data);
-        $this->load->view('layout/layout_topbar');
         $this->load->view('layout/layout_sidebar');
+        $this->load->view('layout/layout_topbar');
         $this->load->view('admin/admin_role_access');
         $this->load->view('layout/layout_footer');
     }
@@ -98,8 +99,8 @@ class Admin extends CI_Controller
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('layout/layout_header', $data);
-            $this->load->view('layout/layout_topbar');
             $this->load->view('layout/layout_sidebar');
+            $this->load->view('layout/layout_topbar');
             $this->load->view('admin/admin_role');
             $this->load->view('layout/layout_footer');
         } else {
@@ -130,5 +131,19 @@ class Admin extends CI_Controller
     {
         $role = $this->db->get_where('user_role', ['id' => $roleId])->row_array();
         exit(json_encode($role));
+    }
+
+    public function user_data()
+    {
+        $data['title'] = 'User Data';
+        $data['user'] = $this->db->get_where('user_data', ['email' => $this->session->userdata('email')])->row_array();
+
+        $data['users'] = $this->user->getUserAllWithRole();
+
+        $this->load->view('layout/layout_header', $data);
+        $this->load->view('layout/layout_sidebar');
+        $this->load->view('layout/layout_topbar');
+        $this->load->view('admin/admin_user_data');
+        $this->load->view('layout/layout_footer');
     }
 }

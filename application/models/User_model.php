@@ -15,4 +15,18 @@ class User_model extends CI_Model
 
         return $query;
     }
+
+    public function getUserAllWithRole()
+    {
+        $query = "
+            SELECT `ud`.`id`, `ud`.`avatar_image`, `ud`.`username`, 
+            `ud`.`first_name`, `ud`.`last_name`, `ud`.`gender`, `ud`.`address`, `ud`.`phone_number`,
+            `ud`.`created_at`, `ud`.`updated_at`, `ud`.`email`, `ur`.`role`
+            FROM `user_data` AS ud
+            JOIN `user_role` AS ur
+                ON `ud`.`role_id` = `ur`.`id`
+        ";
+
+        return $this->db->query($query)->result_array();
+    }
 }

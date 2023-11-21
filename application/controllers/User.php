@@ -29,8 +29,8 @@ class User extends CI_Controller
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('layout/layout_header', $data);
-            $this->load->view('layout/layout_topbar');
             $this->load->view('layout/layout_sidebar');
+            $this->load->view('layout/layout_topbar');
             $this->load->view('user/user_index', $data);
             $this->load->view('layout/layout_footer');
         } else {
@@ -120,8 +120,8 @@ class User extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $this->load->view('layout/layout_header', $data);
-            $this->load->view('layout/layout_topbar');
             $this->load->view('layout/layout_sidebar');
+            $this->load->view('layout/layout_topbar');
             $this->load->view('user/user_change_password', $data);
             $this->load->view('layout/layout_footer');
         } else {
