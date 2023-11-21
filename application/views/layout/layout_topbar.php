@@ -37,10 +37,11 @@
         </div> -->
 
     <div id="main" class="layout-navbar navbar-fixed">
+        <!-- layout-navbar navbar-fixed or min-vh-100 -->
         <header>
             <nav class="navbar navbar-expand navbar-light navbar-top">
                 <div class="container-fluid">
-                    <a href="#" class="burger-btn d-block">
+                    <a class="burger-btn d-block cursor-pointer">
                         <i class="bi bi-justify fs-3"></i>
                     </a>
 
@@ -55,7 +56,7 @@
                                 <div class="user-menu d-flex">
                                     <div class="user-name text-end me-3">
                                         <h6 class="mb-0 text-gray-600"><?= $user['username']; ?></h6>
-                                        <p class="mb-0 text-sm text-gray-600">Administrator</p>
+                                        <p class="mb-0 text-sm text-gray-600"><?= get_role_name($user['role_id']); ?></p>
                                     </div>
                                     <div class="user-img d-flex align-items-center">
                                         <div class="avatar avatar-md">

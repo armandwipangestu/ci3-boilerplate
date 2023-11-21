@@ -41,3 +41,10 @@ function check_access($roleName, $menuId)
         return "checked='checked'";
     }
 }
+
+function get_role_name($roleId)
+{
+    $ci = get_instance();
+    $roleName = $ci->db->get_where('user_role', ['id' => $roleId])->row_array()['role'];
+    return $roleName;
+}
