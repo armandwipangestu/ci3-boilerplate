@@ -20,8 +20,8 @@
                         <h3 class="mt-3"><?= $user['username']; ?></h3>
                         <p class="text-small"><?= $role_name; ?> - Since <?= (new DateTime($user['created_at']))->format('d F Y'); ?></p>
                         <ul class="text-small text-muted mt-3">
-                            <li>Maks upload file: 2MB</li>
-                            <li>Allowed extension: JPG dan PNG</li>
+                            <li>Max upload file: <b>2MB</b></li>
+                            <li>Allowed extension: <b>JPG and PNG</b></li>
                         </ul>
                     </div>
                 </div>
