@@ -68,12 +68,32 @@
                         <div class="col-12 col-md-6 order-md-2 order-first">
                             <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item">
-                                        <a href="index.html">Dashboard</a>
-                                    </li>
-                                    <li class="breadcrumb-item active" aria-current="page">
-                                        Layout Vertical Navbar
-                                    </li>
+                                    <?php
+                                    $segments = $this->uri->segment_array();
+
+                                    echo "<li class='breadcrumb-item'><a href='" . base_url() . "'><i class='fas fa-home'></i></a></li>";
+
+                                    $url = '';
+
+                                    foreach ($segments as $key => $segment) :
+                                    ?>
+                                        <?php
+                                        $url .= '/' . $segment;
+                                        $text = ucwords(str_replace('_', ' ', $segment));
+
+                                        if ($url == "/admin/role_access") {
+                                            $url = '/admin/role';
+                                            $text = 'Role';
+                                        }
+
+                                        if ($key === array_key_last($segments)) :
+                                        ?>
+                                            <li class="breadcrumb-item ative" aria-current="page"><?= $text; ?></li>
+                                        <?php else : ?>
+                                            <li class="breadcrumb-item"><a href="<?= base_url($url); ?>"><?= $text; ?></a></li>
+                                        <?php endif; ?>
+
+                                    <?php endforeach; ?>
                                 </ol>
                             </nav>
                         </div>
