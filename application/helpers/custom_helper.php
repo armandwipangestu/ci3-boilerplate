@@ -28,3 +28,16 @@ function _checkIsLogin()
         }
     }
 }
+
+function check_access($roleName, $menuId)
+{
+    $ci = get_instance();
+    $roleId = $ci->db->get_where('user_role', ['role' => $roleName])->row_array()['id'];
+    $ci->db->where('role_id', $roleId);
+    $ci->db->where('menu_id', $menuId);
+    $result = $ci->db->get('user_access_menu');
+
+    if ($result->num_rows() > 0) {
+        return "checked='checked'";
+    }
+}

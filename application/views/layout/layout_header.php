@@ -20,6 +20,13 @@
     <link rel="stylesheet" href="<?= base_url(); ?>template/mazer/dist/assets/extensions/simple-datatables/style.css">
     <link rel="stylesheet" href="<?= base_url(); ?>template/mazer/dist/assets/compiled/css/table-datatable.css">
 
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="<?= base_url(); ?>template/mazer/dist/assets/extensions/@fortawesome/fontawesome-free/css/all.min.css">
+
+    <!-- Dripicons -->
+    <link rel="stylesheet" href="<?= base_url(); ?>template/mazer/dist/assets/extensions/@icon/dripicons/dripicons.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>template/mazer/dist//assets/compiled/css/ui-icons-dripicons.css">
+
     <script src="<?= base_url(); ?>template/mazer/dist/assets/static/js/initTheme.js"></script>
 </head>
 
