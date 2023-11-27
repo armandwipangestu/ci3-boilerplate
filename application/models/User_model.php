@@ -29,4 +29,23 @@ class User_model extends CI_Model
 
         return $this->db->query($query)->result_array();
     }
+
+    public function getUserByUsername($username)
+    {
+        $query = "
+            SELECT `ud`.`id`, `ud`.`avatar_image`, `ud`.`username`, 
+            `ud`.`first_name`, `ud`.`last_name`, `ud`.`gender`, `ud`.`address`, `ud`.`phone_number`,
+            `ud`.`created_at`, `ud`.`updated_at`, `ud`.`email`, `ud`.`role_id`, `ur`.`role`
+            FROM `user_data` AS ud
+            JOIN `user_role` AS ur
+                ON `ud`.`role_id` = `ur`.`id`
+            WHERE `ud`.`username` = '$username'
+        ";
+
+        $user = $this->db->query($query)->row();
+        $roles = $this->db->get('user_role')->result();
+        $user->roles = $roles;
+
+        return $user;
+    }
 }

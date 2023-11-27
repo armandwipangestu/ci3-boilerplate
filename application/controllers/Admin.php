@@ -140,10 +140,108 @@ class Admin extends CI_Controller
 
         $data['users'] = $this->user->getUserAllWithRole();
 
-        $this->load->view('layout/layout_header', $data);
-        $this->load->view('layout/layout_sidebar');
-        $this->load->view('layout/layout_topbar');
-        $this->load->view('admin/admin_user_data');
-        $this->load->view('layout/layout_footer');
+        // First Name Field
+        $this->form_validation->set_rules('first_name', 'First Name', 'required|trim', ['required' => "First Name can't be empty"]);
+        // Last Name Field
+        $this->form_validation->set_rules('last_name', 'Last Name', 'required|trim', ['required' => "Last Name can't be empty"]);
+        // Gender Field
+        $this->form_validation->set_rules('gender', 'Gender', 'required|trim', ['required' => "Gender can't be empty"]);
+        // Address Field
+        $this->form_validation->set_rules('address', 'Address', 'required|trim', ['required' => "Address can't be empty"]);
+        // Phone Number Field
+        $this->form_validation->set_rules('phone_number', 'Phone Number', 'required|trim', ['required' => "Phone Number can't be empty"]);
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('layout/layout_header', $data);
+            $this->load->view('layout/layout_sidebar');
+            $this->load->view('layout/layout_topbar');
+            $this->load->view('admin/admin_user_data');
+            $this->load->view('layout/layout_footer');
+        } else {
+
+            // check if change password field empty or not
+            if (htmlspecialchars($this->input->post('password'))) {
+                $data = [
+                    'first_name' => htmlspecialchars($this->input->post('first_name', true)),
+                    'last_name' => htmlspecialchars($this->input->post('last_name', true)),
+                    'gender' => htmlspecialchars($this->input->post('gender', true)),
+                    'address' => htmlspecialchars($this->input->post('address', true)),
+                    'phone_number' => htmlspecialchars($this->input->post('phone_number', true)),
+                    'role_id' => htmlspecialchars($this->input->post('role_id', true)),
+                    'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+                ];
+            } else {
+                $data = [
+                    'first_name' => htmlspecialchars($this->input->post('first_name', true)),
+                    'last_name' => htmlspecialchars($this->input->post('last_name', true)),
+                    'gender' => htmlspecialchars($this->input->post('gender', true)),
+                    'address' => htmlspecialchars($this->input->post('address', true)),
+                    'phone_number' => htmlspecialchars($this->input->post('phone_number', true)),
+                    'role_id' => htmlspecialchars($this->input->post('role_id', true)),
+                ];
+            }
+
+            // Check if there are images to be uploaded
+            $upload_image = $_FILES['avatar_image']['name'];
+
+            if ($upload_image) {
+                $config['allowed_types'] = 'jpg|png';
+                $config['max_size'] = '2048';
+                $config['upload_path'] = './assets/img/avatar_image/';
+
+                // Get extension file
+                $file_ext = pathinfo($_FILES['avatar_image']['name'], PATHINFO_EXTENSION);
+
+                // Create unique file name with uniqid() function and concate with extension name
+                $unique_filename = uniqid() . '_' . time() . '.' . $file_ext;
+
+                $config['file_name'] = $unique_filename;
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('avatar_image')) {
+                    $old_avatar_image = $this->db->get_where("user_data", ['id' => $this->session->userdata('id_user')])->row_array()['avatar_image'];
+                    if ($old_avatar_image != "default_male.png" && $old_avatar_image != "default_female.png") {
+                        unlink(FCPATH . 'assets/img/avatar_image/' . $old_avatar_image);
+                    }
+                    $new_avatar_image = $this->upload->data('file_name');
+                    $this->db->set('avatar_image', $new_avatar_image);
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            }
+
+            $this->db->where('id', htmlspecialchars($this->input->post('id', true)));
+            $this->db->update('user_data', $data);
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success mb-4">User <b>' . htmlspecialchars($this->input->post('username', true)) . '</b> has been updated!</div>'
+            );
+            redirect('admin/user_data');
+        }
+    }
+
+    public function get_user_by_username()
+    {
+        $username = $this->uri->segment(3);
+        $user = $this->user->getUserByUsername($username);
+
+        exit(json_encode($user));
+    }
+
+    public function delete_user_by_username()
+    {
+        $username = $this->uri->segment(3);
+        $avatar_image = $this->db->get_where('user_data', ['username' => $username])->row_array()['avatar_image'];
+
+        if ($avatar_image != "default_male.png" && $avatar_image != "default_female.png") {
+            unlink(FCPATH . 'assets/img/avatar_image/' . $avatar_image);
+        }
+
+        $this->db->delete('user_data', ['username' => $username]);
+
+        $this->session->set_flashdata('message', '<div class="alert alert-success ml-4 mr-4">Account has been deleted!</div>');
+        redirect('admin/user_data');
     }
 }
