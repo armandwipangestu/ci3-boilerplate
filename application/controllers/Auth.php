@@ -178,4 +178,18 @@ class Auth extends CI_Controller
             return true;
         }
     }
+
+    public function blocked()
+    {
+        $data['error_code'] = '403';
+        $data['title'] = 'ERROR - ' . $data['error_code'];
+        $data['error_message'] = 'Access Forbidden';
+        $data['user'] = $this->db->get_where('user_data', ['email' => $this->session->userdata('email')])->row_array();
+
+        $this->load->view('layout/layout_header', $data);
+        $this->load->view('layout/layout_sidebar');
+        $this->load->view('layout/layout_topbar');
+        $this->load->view('auth/auth_blocked');
+        $this->load->view('layout/layout_footer');
+    }
 }
