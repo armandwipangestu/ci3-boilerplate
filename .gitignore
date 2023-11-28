@@ -34,3 +34,12 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 # .env configuration
 .env.development
 .env
+
+# Ignore all files in the img/avatar_image directory
+assets/img/avatar_image/*
+
+# Include specific image files
+!assets/img/avatar_image/default_female.jpg
+!assets/img/avatar_image/default_male.jpg
+!assets/img/avatar_image/default_female_old.png
+!assets/img/avatar_image/default_male_old.png
