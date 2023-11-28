@@ -8,40 +8,50 @@
             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modallAddNewRole">Add New Role</a>
         </div>
         <div class="card-body">
-            <table class="table table-striped" id="table1">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Created At</th>
-                        <th scope="col">Updated At</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1 ?>
-                    <?php foreach ($role as $r) : ?>
+            <div class="table-responsive">
+                <table class="table table-hover table-lg" id="table1">
+                    <thead>
                         <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><?= $r['role']; ?></td>
-                            <td><?= (new DateTime($r['created_at']))->format('l, j F Y H:m:s'); ?></td>
-                            <td><?= (new DateTime($r['updated_at']))->format('l, j F Y H:m:s'); ?></td>
-                            <td>
-                                <a href="<?= base_url('admin/role_access/' . $r['role']); ?>" class="cursor-pointer">
-                                    <span class="badge bg-success">Change Access</span>
-                                </a>
-                                <a onclick="changeRole('<?= $r['id']; ?>')" class="cursor-pointer">
-                                    <span class="badge bg-warning">Edit</span>
-                                </a>
-                                <a class="cursor-pointer delete-menu" onclick="deleteRole(this)" data-id="<?= $r['id']; ?>" data-role="<?= $r['role']; ?>">
-                                    <span class="badge bg-danger">Delete</span>
-                                </a>
-                            </td>
+                            <th>No</th>
+                            <th>Role</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                            <th>Action</th>
                         </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1 ?>
+                        <?php foreach ($role as $r) : ?>
+                            <tr>
+                                <th class="col-auto">
+                                    <?= $i; ?>
+                                </th>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $r['role']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($r['created_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($r['updated_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <a href="<?= base_url('admin/role_access/' . $r['role']); ?>" class="cursor-pointer">
+                                        <span class="badge bg-success">Change Access</span>
+                                    </a>
+                                    <a onclick="changeRole('<?= $r['id']; ?>')" class="cursor-pointer">
+                                        <span class="badge bg-warning">Edit</span>
+                                    </a>
+                                    <a class="cursor-pointer delete-menu" onclick="deleteRole(this)" data-id="<?= $r['id']; ?>" data-role="<?= $r['role']; ?>">
+                                        <span class="badge bg-danger">Delete</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php $i++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>

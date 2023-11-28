@@ -7,13 +7,23 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         _checkIsLogin();
+        $this->load->model('Admin_model', 'admin');
         $this->load->model('User_model', 'user');
+        $this->load->model('LogAction_model', 'logaction');
     }
 
     public function index()
     {
         $data['title'] = 'Dashboard';
         $data['user'] = $this->db->get_where('user_data', ['email' => $this->session->userdata('email')])->row_array();
+        $data['total_account'] = $this->db->from('user_data')->count_all_results();
+        $data['total_admin'] = $this->admin->getTotalByRole("Administrator")['total'];
+        $data['total_user'] = $this->admin->getTotalByRole("User")['total'];
+        $data['total_role'] = $this->db->from('user_role')->count_all_results();
+        $data['user_registration'] = json_encode($this->admin->getUserRegistration());
+        $data['recent_users'] = $this->admin->getRecentUsers();
+        $data['user_gender'] = json_encode($this->admin->getUserGender());
+        $data['user_log_action'] = $this->admin->getLogAction();
 
         $this->load->view('layout/layout_header', $data);
         $this->load->view('layout/layout_sidebar');
@@ -43,6 +53,13 @@ class Admin extends CI_Controller
         } else {
             $role = htmlspecialchars($this->input->post('role'), true);
             $this->db->insert('user_role', ['role' => $role]);
+
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Role "' . $role . '" has been added!',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
 
             $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Role "<b>' . $role . '</b>" has been added!</div>');
             redirect('admin/role');
@@ -78,8 +95,28 @@ class Admin extends CI_Controller
         $result = $this->db->get_where('user_access_menu', $data);
         if ($result->num_rows() < 1) {
             $this->db->insert('user_access_menu', $data);
+
+            $role = $this->db->get_where('user_role', ['id' => $role_id])->row_array()['role'];
+            $menu = $this->db->get_where('user_menu', ['id' => $menu_id])->row_array()['menu'];
+
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Role "' . $role . '" granted access to menu "' . $menu . '"',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
         } else {
             $this->db->delete('user_access_menu', $data);
+
+            $role = $this->db->get_where('user_role', ['id' => $role_id])->row_array()['role'];
+            $menu = $this->db->get_where('user_menu', ['id' => $menu_id])->row_array()['menu'];
+
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Role "' . $role . '" granted no access to menu "' . $menu . '"',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
         }
 
         $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Access has been updated!</div>');
@@ -111,6 +148,13 @@ class Admin extends CI_Controller
             $this->db->where('id', $id);
             $this->db->update('user_role', ['role' => $role]);
 
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Role "' . $roleBefore['role'] . '" has been change to "' . $role . '"',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
+
             $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Role "<b>' . $roleBefore['role'] . '</b>" has been change to "<b>' . $role . '</b>"!</div>');
             redirect('admin/role');
         }
@@ -122,6 +166,13 @@ class Admin extends CI_Controller
         $role = $this->db->get_where('user_role', ['id' => $id])->row_array()['role'];
         $this->db->where('id', $id);
         $this->db->delete('user_role');
+
+        $userLogAction = [
+            'user_id' => $this->session->userdata('id_user'),
+            'action' => 'Role "' . $role . '" has been deleted!',
+        ];
+
+        $this->logaction->insertLog($userLogAction);
 
         $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Role "<b>' . $role . '</b>" has been deleted!</div>');
         redirect('admin/role');
@@ -201,7 +252,7 @@ class Admin extends CI_Controller
 
                 if ($this->upload->do_upload('avatar_image')) {
                     $old_avatar_image = $this->db->get_where("user_data", ['id' => $this->session->userdata('id_user')])->row_array()['avatar_image'];
-                    if ($old_avatar_image != "default_male.png" && $old_avatar_image != "default_female.png") {
+                    if ($old_avatar_image != "default_male.jpg" && $old_avatar_image != "default_female.jpg") {
                         unlink(FCPATH . 'assets/img/avatar_image/' . $old_avatar_image);
                     }
                     $new_avatar_image = $this->upload->data('file_name');
@@ -213,6 +264,16 @@ class Admin extends CI_Controller
 
             $this->db->where('id', htmlspecialchars($this->input->post('id', true)));
             $this->db->update('user_data', $data);
+
+            $usernameAdmin = $this->db->get_where('user_data', ['id' => $this->session->userdata('id_user')])->row_array()['username'];
+            $usernameUser = $this->db->get_where('user_data', ['id' => htmlspecialchars($this->input->post('id', true))])->row_array()['username'];
+
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Admin "' . $usernameAdmin . '" has been change user data "' . $usernameUser . '"!',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
 
             $this->session->set_flashdata(
                 'message',
@@ -235,11 +296,23 @@ class Admin extends CI_Controller
         $username = $this->uri->segment(3);
         $avatar_image = $this->db->get_where('user_data', ['username' => $username])->row_array()['avatar_image'];
 
-        if ($avatar_image != "default_male.png" && $avatar_image != "default_female.png") {
+        if ($avatar_image != "default_male.jpg" && $avatar_image != "default_female.jpg") {
             unlink(FCPATH . 'assets/img/avatar_image/' . $avatar_image);
         }
 
+        $usernameAdmin = $this->db->get_where('user_data', ['id' => $this->session->userdata('id_user')])->row_array()['username'];
+        $usernameUser = $this->db->get_where('user_data', ['username' => $username])->row_array()['username'];
+        $userId = $this->db->get_where('user_data', ['username' => $username])->row_array()['id'];
+
+        $userLogAction = [
+            'user_id' => $this->session->userdata('id_user'),
+            'action' => 'Admin "' . $usernameAdmin . '" has been deleted user data "' . $usernameUser . '"!',
+        ];
+
+        $this->logaction->insertLog($userLogAction);
+
         $this->db->delete('user_data', ['username' => $username]);
+        $this->db->delete('user_log_action', ['user_id' => $userId]);
 
         $this->session->set_flashdata('message', '<div class="alert alert-success ml-4 mr-4">Account has been deleted!</div>');
         redirect('admin/user_data');

@@ -8,7 +8,7 @@
             <a class="btn btn-primary" style="cursor: default;">Role selected: <b><?= $role['role']; ?></b></a>
         </div>
         <div class="card-body">
-            <table class="table table-striped" id="table1">
+            <!-- <table class="table table-striped" id="table1">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
@@ -31,7 +31,38 @@
                         <?php $i++; ?>
                     <?php endforeach; ?>
                 </tbody>
-            </table>
+            </table> -->
+
+            <div class="table-responsive">
+                <table class="table table-hover table-lg">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Menu</th>
+                            <th>Access</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1 ?>
+                        <?php foreach ($menu as $m) : ?>
+                            <tr>
+                                <th class="col-auto">
+                                    <?= $i; ?>
+                                </th>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $m['menu']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" <?= check_access($role['role'], $m['id']); ?> data-role="<?= $role['id']; ?>" data-menu="<?= $m['id']; ?>" onclick="changeRoleAccess(this)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php $i++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>

@@ -11,43 +11,59 @@
             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddNewSubmenu">Add New Submenu</a>
         </div>
         <div class="card-body">
-            <table class="table table-striped" id="table1">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Submenu / Title</th>
-                        <th scope="col">Menu</th>
-                        <th scope="col">Url</th>
-                        <th scope="col">Icon</th>
-                        <th scope="col">Created At</th>
-                        <th scope="col">Updated At</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1 ?>
-                    <?php foreach ($submenu as $sm) : ?>
+            <div class="table-responsive">
+                <table class="table table-hover table-lg" id="table1">
+                    <thead>
                         <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><?= $sm['title']; ?></td>
-                            <td><?= $sm['menu']; ?></td>
-                            <td><?= $sm['url']; ?></td>
-                            <td><?= $sm['icon']; ?></td>
-                            <td><?= (new DateTime($sm['created_at']))->format('l, j F Y H:m:s'); ?></td>
-                            <td><?= (new DateTime($sm['updated_at']))->format('l, j F Y H:m:s'); ?></td>
-                            <td>
-                                <a onclick="changeMenu('<?= $sm['id']; ?>')" class="cursor-pointer">
-                                    <span class="badge bg-warning">Edit</span>
-                                </a>
-                                <a class="cursor-pointer delete-menu" onclick="deleteSubmenu(this)" data-id="<?= $sm['id']; ?>" data-submenu="<?= $sm['title']; ?>">
-                                    <span class="badge bg-danger">Delete</span>
-                                </a>
-                            </td>
+                            <th scope="col">No</th>
+                            <th scope="col">Submenu / Title</th>
+                            <th scope="col">Menu</th>
+                            <th scope="col">Url</th>
+                            <th scope="col">Icon</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Updated At</th>
+                            <th scope="col">Action</th>
                         </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1 ?>
+                        <?php foreach ($submenu as $sm) : ?>
+                            <tr>
+                                <th class="col-auto">
+                                    <?= $i; ?>
+                                </th>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $sm['title']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $sm['menu']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $sm['url']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $sm['icon']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($sm['created_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($sm['updated_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <a onclick="changeMenu('<?= $sm['id']; ?>')" class="cursor-pointer">
+                                        <span class="badge bg-warning">Edit</span>
+                                    </a>
+                                    <a class="cursor-pointer delete-menu" onclick="deleteSubmenu(this)" data-id="<?= $sm['id']; ?>" data-submenu="<?= $sm['title']; ?>">
+                                        <span class="badge bg-danger">Delete</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php $i++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>

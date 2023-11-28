@@ -8,6 +8,7 @@ class User extends CI_Controller
         parent::__construct();
         _checkIsLogin();
         $this->load->model('User_model', 'user');
+        $this->load->model('LogAction_model', 'logaction');
     }
 
     public function index()
@@ -62,7 +63,7 @@ class User extends CI_Controller
 
                 if ($this->upload->do_upload('avatar_image')) {
                     $old_avatar_image = $this->db->get_where("user_data", ['id' => $this->session->userdata('id_user')])->row_array()['avatar_image'];
-                    if ($old_avatar_image != "default_male.png" && $old_avatar_image != "default_female.png") {
+                    if ($old_avatar_image != "default_male.jpg" && $old_avatar_image != "default_female.jpg") {
                         unlink(FCPATH . 'assets/img/avatar_image/' . $old_avatar_image);
                     }
                     $new_avatar_image = $this->upload->data('file_name');
@@ -74,6 +75,13 @@ class User extends CI_Controller
 
             $this->db->where('id', $this->session->userdata('id_user'));
             $this->db->update('user_data', $data);
+
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Profile edited!',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
 
             $this->session->set_flashdata(
                 'message',
@@ -87,11 +95,12 @@ class User extends CI_Controller
     {
         $avatar_image = $this->db->get_where('user_data', ['id' => $this->session->userdata('id_user')])->row_array()['avatar_image'];
 
-        if ($avatar_image != "default_male.png" && $avatar_image != "default_female.png") {
+        if ($avatar_image != "default_male.jpg" && $avatar_image != "default_female.jpg") {
             unlink(FCPATH . 'assets/img/avatar_image/' . $avatar_image);
         }
 
         $this->db->delete('user_data', ['id' => $this->session->userdata('id_user')]);
+        $this->db->delete('user_log_action', ['user_id' => $this->session->userdata('id_user')]);
 
         $this->session->set_flashdata('message', '<div class="alert alert-success ml-4 mr-4">Your account has been deleted!</div>');
         redirect('auth/logout');
@@ -141,6 +150,13 @@ class User extends CI_Controller
                     $this->db->set('password', $password_hash);
                     $this->db->where('email', $this->session->userdata('email'));
                     $this->db->update('user_data');
+
+                    $userLogAction = [
+                        'user_id' => $this->session->userdata('id_user'),
+                        'action' => 'Password changed!',
+                    ];
+
+                    $this->logaction->insertLog($userLogAction);
 
                     $this->session->set_flashdata(
                         'message',

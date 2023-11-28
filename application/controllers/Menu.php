@@ -7,6 +7,7 @@ class Menu extends CI_Controller
     {
         parent::__construct();
         _checkIsLogin();
+        $this->load->model('LogAction_model', 'logaction');
     }
 
     public function index()
@@ -30,6 +31,13 @@ class Menu extends CI_Controller
         } else {
             $menu = htmlspecialchars($this->input->post('menu'));
             $this->db->insert('user_menu', ['menu' => $menu]);
+
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Menu "' . $menu . '" has been added!',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
 
             $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Menu "<b>' . $menu . '</b>" has been added!</div>');
             redirect('menu');
@@ -62,6 +70,13 @@ class Menu extends CI_Controller
             $this->db->where('id', $id);
             $this->db->update('user_menu', ['menu' => $menu]);
 
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Menu "' . $menuBefore['menu'] . '" has been change to "' . $menu . '"!',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
+
             $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Menu "<b>' . $menuBefore['menu'] . '</b>" has been change to "<b>' . $menu . '</b>"!</div>');
             redirect('menu');
         }
@@ -73,6 +88,13 @@ class Menu extends CI_Controller
         $menu_name = $this->db->get_where('user_menu', ['id' => $id])->row_array()['menu'];
         $this->db->where('id', $id);
         $this->db->delete('user_menu');
+
+        $userLogAction = [
+            'user_id' => $this->session->userdata('id_user'),
+            'action' => 'Menu "' . $menu_name . '" has been deleted!',
+        ];
+
+        $this->logaction->insertLog($userLogAction);
 
         $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Menu "<b>' . $menu_name . '</b>" has been deleted!</div>');
         redirect('menu');

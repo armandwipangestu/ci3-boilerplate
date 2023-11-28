@@ -17,7 +17,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered table-lg" id="table1">
+                <table class="table table-hover table-lg" id="table1">
                     <thead>
                         <tr>
                             <th scope="col">No</th>
@@ -39,23 +39,47 @@
                         <?php $i = 1 ?>
                         <?php foreach ($users as $user) : ?>
                             <tr>
-                                <th scope="row"><?= $i; ?></th>
-                                <td>
-                                    <div class="avatar avatar-lg">
-                                        <img src="<?= base_url(); ?>assets/img/avatar_image/<?= $user['avatar_image'] ?>" alt="Avatar Image" class="">
+                                <th class="col-auto">
+                                    <?= $i; ?>
+                                </th>
+                                <td class="col-auto">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-md">
+                                            <img src="<?= base_url(); ?>assets/img/avatar_image/<?= $user['avatar_image'] ?>" alt="Avatar Image">
+                                        </div>
                                     </div>
                                 </td>
-                                <td><?= $user['first_name']; ?></td>
-                                <td><?= $user['last_name']; ?></td>
-                                <td><?= $user['username']; ?></td>
-                                <td><?= $user['email']; ?></td>
-                                <td><?= $user['gender']; ?></td>
-                                <td><?= $user['address']; ?></td>
-                                <td><?= $user['phone_number']; ?></td>
-                                <td><?= $user['role']; ?></td>
-                                <td><?= (new DateTime($user['created_at']))->format('l, j F Y H:m:s'); ?></td>
-                                <td><?= (new DateTime($user['updated_at']))->format('l, j F Y H:m:s'); ?></td>
-                                <td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['first_name']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['last_name']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['username']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['email']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['gender']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['address']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['phone_number']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['role']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($user['created_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($user['updated_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
                                     <a onclick="changeUser('<?= $user['username']; ?>')" class="cursor-pointer">
                                         <span class="badge bg-warning">Edit</span>
                                     </a>

@@ -8,37 +8,47 @@
             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddNewMenu">Add New Menu</a>
         </div>
         <div class="card-body">
-            <table class="table table-striped" id="table1">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Menu</th>
-                        <th scope="col">Created At</th>
-                        <th scope="col">Updated At</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $i = 1 ?>
-                    <?php foreach ($menu as $m) : ?>
+            <div class="table-responsive">
+                <table class="table table-hover table-lg" id="table1">
+                    <thead>
                         <tr>
-                            <th scope="row"><?= $i; ?></th>
-                            <td><?= $m['menu']; ?></td>
-                            <td><?= (new DateTime($m['created_at']))->format('l, j F Y H:m:s'); ?></td>
-                            <td><?= (new DateTime($m['updated_at']))->format('l, j F Y H:m:s'); ?></td>
-                            <td>
-                                <a onclick="changeMenu('<?= $m['id']; ?>')" class="cursor-pointer">
-                                    <span class="badge bg-warning">Edit</span>
-                                </a>
-                                <a class="cursor-pointer delete-menu" onclick="deleteMenu(this)" data-id="<?= $m['id']; ?>" data-menu="<?= $m['menu']; ?>">
-                                    <span class="badge bg-danger">Delete</span>
-                                </a>
-                            </td>
+                            <th scope="col">No</th>
+                            <th scope="col">Menu</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Updated At</th>
+                            <th scope="col">Action</th>
                         </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1 ?>
+                        <?php foreach ($menu as $m) : ?>
+                            <tr>
+                                <th class="col-auto">
+                                    <?= $i; ?>
+                                </th>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $m['menu']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($m['created_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($m['updated_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <a onclick="changeMenu('<?= $m['id']; ?>')" class="cursor-pointer">
+                                        <span class="badge bg-warning">Edit</span>
+                                    </a>
+                                    <a class="cursor-pointer delete-menu" onclick="deleteMenu(this)" data-id="<?= $m['id']; ?>" data-menu="<?= $m['menu']; ?>">
+                                        <span class="badge bg-danger">Delete</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php $i++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>

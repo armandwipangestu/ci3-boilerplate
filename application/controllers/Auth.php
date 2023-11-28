@@ -142,7 +142,7 @@ class Auth extends CI_Controller
             $this->load->view('auth/auth_signup');
             $this->load->view('layout/layout_footer_auth');
         } else {
-            $avatar_image = htmlspecialchars($this->input->post('gender', true)) == "Male" ? "default_male.png" : "default_female.png";
+            $avatar_image = htmlspecialchars($this->input->post('gender', true)) == "Male" ? "default_male.jpg" : "default_female.jpg";
 
             // Check if any data already exists in the user_data table, if data empty use role 1, if data exists use role 2
             $this->db->from('user_data');
@@ -181,6 +181,10 @@ class Auth extends CI_Controller
 
     public function blocked()
     {
+        if (!$this->db->get_where('user_data', ['id' => $this->session->userdata('id_user')])->row_array()) {
+            redirect('auth/logout');
+        }
+
         $data['error_code'] = '403';
         $data['title'] = 'ERROR - ' . $data['error_code'];
         $data['error_message'] = 'Access Forbidden';
