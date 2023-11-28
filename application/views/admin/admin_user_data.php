@@ -16,7 +16,7 @@
             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddNewUser">Add New User</a>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+            <!-- <div class="table-responsive">
                 <table class="table table-striped table-hover table-bordered table-lg" id="table1">
                     <thead>
                         <tr>
@@ -56,6 +56,85 @@
                                 <td><?= (new DateTime($user['created_at']))->format('l, j F Y H:m:s'); ?></td>
                                 <td><?= (new DateTime($user['updated_at']))->format('l, j F Y H:m:s'); ?></td>
                                 <td>
+                                    <a onclick="changeUser('<?= $user['username']; ?>')" class="cursor-pointer">
+                                        <span class="badge bg-warning">Edit</span>
+                                    </a>
+
+                                    <a onclick="deleteUser('<?= $user['username']; ?>')" class="cursor-pointer">
+                                        <span class="badge bg-danger">Delete</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php $i++; ?>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div> -->
+
+            <div class="table-responsive">
+                <table class="table table-hover table-lg">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Avatar Image</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Updated At</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i = 1 ?>
+                        <?php foreach ($users as $user) : ?>
+                            <tr>
+                                <th class="col-auto">
+                                    <?= $i; ?>
+                                </th>
+                                <td class="col-auto">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-md">
+                                            <img src="<?= base_url(); ?>assets/img/avatar_image/<?= $user['avatar_image'] ?>" alt="Avatar Image">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['first_name']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['last_name']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['username']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['email']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['gender']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['address']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['phone_number']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= $user['role']; ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($user['created_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
+                                    <p class="font-bold mb-0"><?= (new DateTime($user['updated_at']))->format('l, j F Y H:m:s'); ?></p>
+                                </td>
+                                <td class="col-auto">
                                     <a onclick="changeUser('<?= $user['username']; ?>')" class="cursor-pointer">
                                         <span class="badge bg-warning">Edit</span>
                                     </a>

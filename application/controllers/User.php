@@ -62,7 +62,7 @@ class User extends CI_Controller
 
                 if ($this->upload->do_upload('avatar_image')) {
                     $old_avatar_image = $this->db->get_where("user_data", ['id' => $this->session->userdata('id_user')])->row_array()['avatar_image'];
-                    if ($old_avatar_image != "default_male.png" && $old_avatar_image != "default_female.png") {
+                    if ($old_avatar_image != "default_male.jpg" && $old_avatar_image != "default_female.jpg") {
                         unlink(FCPATH . 'assets/img/avatar_image/' . $old_avatar_image);
                     }
                     $new_avatar_image = $this->upload->data('file_name');
@@ -87,7 +87,7 @@ class User extends CI_Controller
     {
         $avatar_image = $this->db->get_where('user_data', ['id' => $this->session->userdata('id_user')])->row_array()['avatar_image'];
 
-        if ($avatar_image != "default_male.png" && $avatar_image != "default_female.png") {
+        if ($avatar_image != "default_male.jpg" && $avatar_image != "default_female.jpg") {
             unlink(FCPATH . 'assets/img/avatar_image/' . $avatar_image);
         }
 

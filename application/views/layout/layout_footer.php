@@ -21,10 +21,6 @@
 
 <script src="<?= base_url(); ?>template/mazer/dist/assets/compiled/js/app.js"></script>
 
-<!-- Need: Apexcharts -->
-<script src="<?= base_url(); ?>template/mazer/dist/assets/extensions/apexcharts/apexcharts.min.js"></script>
-<script src="<?= base_url(); ?>template/mazer/dist/assets/static/js/pages/dashboard.js"></script>
-
 <!-- Sweetalert -->
 <script src="<?= base_url(); ?>template/mazer/dist/assets/extensions/sweetalert2/sweetalert2.min.js"></script>
 <script src="<?= base_url(); ?>template/mazer/dist/assets/static/js/pages/sweetalert2.js"></script>
