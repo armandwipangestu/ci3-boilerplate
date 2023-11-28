@@ -100,6 +100,7 @@ class User extends CI_Controller
         }
 
         $this->db->delete('user_data', ['id' => $this->session->userdata('id_user')]);
+        $this->db->delete('user_log_action', ['user_id' => $this->session->userdata('id_user')]);
 
         $this->session->set_flashdata('message', '<div class="alert alert-success ml-4 mr-4">Your account has been deleted!</div>');
         redirect('auth/logout');

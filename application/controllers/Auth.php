@@ -181,6 +181,10 @@ class Auth extends CI_Controller
 
     public function blocked()
     {
+        if (!$this->db->get_where('user_data', ['id' => $this->session->userdata('id_user')])->row_array()) {
+            redirect('auth/logout');
+        }
+
         $data['error_code'] = '403';
         $data['title'] = 'ERROR - ' . $data['error_code'];
         $data['error_message'] = 'Access Forbidden';

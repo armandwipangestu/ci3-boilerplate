@@ -302,6 +302,7 @@ class Admin extends CI_Controller
 
         $usernameAdmin = $this->db->get_where('user_data', ['id' => $this->session->userdata('id_user')])->row_array()['username'];
         $usernameUser = $this->db->get_where('user_data', ['username' => $username])->row_array()['username'];
+        $userId = $this->db->get_where('user_data', ['username' => $username])->row_array()['id'];
 
         $userLogAction = [
             'user_id' => $this->session->userdata('id_user'),
@@ -311,6 +312,7 @@ class Admin extends CI_Controller
         $this->logaction->insertLog($userLogAction);
 
         $this->db->delete('user_data', ['username' => $username]);
+        $this->db->delete('user_log_action', ['user_id' => $userId]);
 
         $this->session->set_flashdata('message', '<div class="alert alert-success ml-4 mr-4">Account has been deleted!</div>');
         redirect('admin/user_data');
