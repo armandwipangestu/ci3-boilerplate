@@ -8,6 +8,7 @@ class User extends CI_Controller
         parent::__construct();
         _checkIsLogin();
         $this->load->model('User_model', 'user');
+        $this->load->model('LogAction_model', 'logaction');
     }
 
     public function index()
@@ -75,6 +76,13 @@ class User extends CI_Controller
             $this->db->where('id', $this->session->userdata('id_user'));
             $this->db->update('user_data', $data);
 
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Profile edited!',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
+
             $this->session->set_flashdata(
                 'message',
                 '<div class="alert alert-success mb-4">Profile edited!</div>'
@@ -141,6 +149,13 @@ class User extends CI_Controller
                     $this->db->set('password', $password_hash);
                     $this->db->where('email', $this->session->userdata('email'));
                     $this->db->update('user_data');
+
+                    $userLogAction = [
+                        'user_id' => $this->session->userdata('id_user'),
+                        'action' => 'Password changed!',
+                    ];
+
+                    $this->logaction->insertLog($userLogAction);
 
                     $this->session->set_flashdata(
                         'message',

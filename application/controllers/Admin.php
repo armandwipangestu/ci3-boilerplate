@@ -265,6 +265,16 @@ class Admin extends CI_Controller
             $this->db->where('id', htmlspecialchars($this->input->post('id', true)));
             $this->db->update('user_data', $data);
 
+            $usernameAdmin = $this->db->get_where('user_data', ['id' => $this->session->userdata('id_user')])->row_array()['username'];
+            $usernameUser = $this->db->get_where('user_data', ['id' => htmlspecialchars($this->input->post('id', true))])->row_array()['username'];
+
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Admin "' . $usernameAdmin . '" has been change user data "' . $usernameUser . '"!',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
+
             $this->session->set_flashdata(
                 'message',
                 '<div class="alert alert-success mb-4">User <b>' . htmlspecialchars($this->input->post('username', true)) . '</b> has been updated!</div>'
@@ -289,6 +299,16 @@ class Admin extends CI_Controller
         if ($avatar_image != "default_male.jpg" && $avatar_image != "default_female.jpg") {
             unlink(FCPATH . 'assets/img/avatar_image/' . $avatar_image);
         }
+
+        $usernameAdmin = $this->db->get_where('user_data', ['id' => $this->session->userdata('id_user')])->row_array()['username'];
+        $usernameUser = $this->db->get_where('user_data', ['username' => $username])->row_array()['username'];
+
+        $userLogAction = [
+            'user_id' => $this->session->userdata('id_user'),
+            'action' => 'Admin "' . $usernameAdmin . '" has been deleted user data "' . $usernameUser . '"!',
+        ];
+
+        $this->logaction->insertLog($userLogAction);
 
         $this->db->delete('user_data', ['username' => $username]);
 

@@ -8,6 +8,7 @@ class Submenu extends CI_Controller
         parent::__construct();
         _checkIsLogin();
         $this->load->model('Menu_model', 'menu');
+        $this->load->model('LogAction_model', 'logaction');
     }
 
     public function index()
@@ -49,6 +50,13 @@ class Submenu extends CI_Controller
                 'icon' => htmlspecialchars($this->input->post('icon', true))
             ];
             $this->db->insert('user_sub_menu', $data);
+
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Submenu "' . $submenu . '" has been added!',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
 
             $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Submenu "<b>' . $submenu . '</b>" has been added!</div>');
             redirect('submenu');
@@ -97,6 +105,13 @@ class Submenu extends CI_Controller
             $this->db->where('id', $id);
             $this->db->update('user_sub_menu', $data);
 
+            $userLogAction = [
+                'user_id' => $this->session->userdata('id_user'),
+                'action' => 'Submenu "' . $submenu . '" has been changed!',
+            ];
+
+            $this->logaction->insertLog($userLogAction);
+
             $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Submenu "<b>' . $submenu . '</b>" has been changed!</div>');
             redirect('submenu');
         }
@@ -108,6 +123,13 @@ class Submenu extends CI_Controller
         $submenu = $this->db->get_where('user_sub_menu', ['id' => $id])->row_array()['title'];
         $this->db->where('id', $id);
         $this->db->delete('user_sub_menu');
+
+        $userLogAction = [
+            'user_id' => $this->session->userdata('id_user'),
+            'action' => 'Submenu "' . $submenu . '" has been deleted!',
+        ];
+
+        $this->logaction->insertLog($userLogAction);
 
         $this->session->set_flashdata('message', '<div class="alert alert-success mb-4">Submenu "<b>' . $submenu . '</b>" has been deleted!</div>');
         redirect('submenu');
