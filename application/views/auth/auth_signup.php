@@ -133,7 +133,7 @@
             <footer>
                 <div class="footer clearfix text-muted">
                     <div class="text-center">
-                        <p>&copy; Copyright 2023 - <?= date("Y"); ?> <a href="#" target="_blank"><?= getenv('APP_NAME'); ?></a>. All rights reserved.</p>
+                        <p>&copy; Copyright 2023 - <?= date("Y"); ?> <a href="https://github.com/armandwipangestu/ci3-boilerplate" target="_blank"><?= getenv('APP_NAME'); ?></a>. All rights reserved.</p>
                     </div>
                     <div class="text-center">
                         <p>

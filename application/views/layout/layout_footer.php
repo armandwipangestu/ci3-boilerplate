@@ -2,7 +2,7 @@
 <footer class="main-footer">
     <div class="footer clearfix mb-0 text-muted">
         <div class="float-start">
-            <p>&copy; Copyright 2023 - <?= date("Y"); ?> <a href="#" target="_blank"><?= getenv('APP_NAME'); ?></a>. All rights reserved.</p>
+            <p>&copy; Copyright 2023 - <?= date("Y"); ?> <a href="https://github.com/armandwipangestu/ci3-boilerplate" target="_blank"><?= getenv('APP_NAME'); ?></a>. All rights reserved.</p>
         </div>
         <div class="float-end">
             <p>
