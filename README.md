@@ -29,7 +29,7 @@ This boilerplate build with some tech stack, such as:
 - [Mazer Version 2.3.0](https://github.com/zuramai/mazer/releases/tag/v2.3.0)
 - [Bootstrap Version 5.3.2](https://getbootstrap.com/)
 - [jQuery Version 3.7.1](https://code.jquery.com/jquery-3.7.1.min.js)
-- [Simple Datatable](https://github.com/fiduswriter/simple-datatables)
+- [Simple Datatables](https://github.com/fiduswriter/simple-datatables)
 - [Sweetalert Version 11.7.32](https://github.com/sweetalert2/sweetalert2/releases/tag/v11.7.32)
 - [ApexCharts Version 3.44.0](https://github.com/apexcharts/apexcharts.js/releases/tag/v3.44.0)
 - [Fontawesome Version 5.15.4](https://fontawesome.com/v5/download)
@@ -40,7 +40,7 @@ This boilerplate build with some tech stack, such as:
 
 > **NOTE**:
 >
-> - For PHP, MySQL dan Apache you can install with bundle like `XAMPP`, `MAMP`, `LAMP` or `Laragon`
+> - For PHP, MySQL and Apache you can install with bundle software like `XAMPP`, `MAMP`, `LAMP` or `Laragon`
 >
 > - `Git` for cloning or downloading this repository
 
@@ -81,7 +81,7 @@ cp .env.example .env.development
 
 > **NOTE**:
 >
-> Change the .env.development fields with your configuration (such as database name, etc)
+> Change the `.env.development` fields with your configuration (such as database name, etc)
 >
 > Default configuration is:
 >
