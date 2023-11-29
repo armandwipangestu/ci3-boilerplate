@@ -13,6 +13,7 @@
   - [Setup Database](#setup-database)
     - [GUI](#gui)
     - [CLI](#cli)
+- [List Default Account Login](#list-default-account-login)
 - [ERD (Entity Relationship Diagram)](#erd-entity-relationship-diagram)
 
 ## Tech Stack
